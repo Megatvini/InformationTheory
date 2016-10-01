@@ -1,4 +1,4 @@
-# /bin/bash
+#!/bin/bash
 
 RED='\x1B[0;31m'
 GREEN='\x1B[0;32m'
@@ -17,30 +17,32 @@ display_summary () {
   then
     echo -e "${GREEN}SUCCESS${END_COLOR}"
   else
-    echo -e "${RED}FAIL${END_COLOR}" >&2
+    echo -e "${RED}FAIL" >&2
+    cat "$2" >&2
+    echo -e "\n${END_COLOR}"
   fi
 }
 
 check () {
     cmp --silent $1 $2
-    display_summary $?
+    display_summary $? $1
 }
 
 run_tests () {
-    for file_path in $TESTS/*.dat
+    for input_file in $TESTS/*.dat
     do
-        input_file="${file_path##*/}"
-        base_name="${input_file%.*}"
-        output_file="${base_name}.ans"
+        file_name="${input_file##*/}"
+        base_name="${file_name%.*}"
+        output_file="${TESTS}/${base_name}.ans"
         tmp_file=$(mktemp)
 
         printf "${BLUE}test #$base_name:${END_COLOR} $f "
 
-        $PYTHON $UNDER_TEST $input_file $tmp_file
+        ${PYTHON} ${UNDER_TEST} ${input_file} ${tmp_file}
 
-        check $tmp_file $output_file
+        check ${tmp_file} ${output_file}
 
-        rm $tmp_file
+        rm ${tmp_file}
     done
 }
 
