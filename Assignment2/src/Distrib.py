@@ -1,5 +1,6 @@
 from collections import Counter
-from Utils import parse_file_args
+from Utils import parse_file_args, print_float_list,\
+    get_distribution_list, get_one_gram_letters, get_bi_gram_letters
 
 
 def split_grams(letter_distribution):
@@ -13,37 +14,17 @@ def split_grams(letter_distribution):
     return one_gram, two_gram
 
 
-geo_letters = ['ა', 'ბ', 'გ', 'დ', 'ე', 'ვ',
-               'ზ', 'თ', 'ი', 'კ', 'ლ', 'მ',
-               'ნ', 'ო', 'პ', 'ჟ', 'რ', 'ს',
-               'ტ', 'უ', 'ფ', 'ქ', 'ღ', 'ყ',
-               'შ', 'ჩ', 'ც', 'ძ', 'წ', 'ჭ',
-               'ხ', 'ჯ', 'ჰ']
-
-
-def print_distribution_list(distribution, out):
-    for val in distribution[:-1]:
-        str_value = "{:.7f}".format(val)
-        out.write(str_value + " ")
-    out.write("{:.7f}".format((distribution[len(distribution) - 1])))
-
-
 def print_distribution_gram(letters, gram_count, out):
-    total = sum(gram_count.values())
-    distribution = []
-    for letter in letters:
-        count = gram_count[letter]
-        part = count/total
-        distribution.append(part)
-    print_distribution_list(distribution, out)
+    distribution = get_distribution_list(gram_count, letters)
+    print_float_list(distribution, out)
 
 
 def print_distribution(letter_distribution, out):
     one_gram, two_gram = split_grams(letter_distribution)
-    single_letters = sorted(geo_letters + [" "])
+    single_letters = get_one_gram_letters()
     print_distribution_gram(single_letters, one_gram, out)
     out.write('\n')
-    two_letters = [ch1 + ch2 for ch1 in single_letters for ch2 in single_letters]
+    two_letters = get_bi_gram_letters(single_letters)
     print_distribution_gram(two_letters, two_gram, out)
 
 
