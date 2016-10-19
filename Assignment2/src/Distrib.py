@@ -1,5 +1,5 @@
-import argparse
 from collections import Counter
+from Utils import parse_file_args
 
 
 def split_grams(letter_distribution):
@@ -78,19 +78,9 @@ def read_distribution(input_filename):
 
 
 def main():
-    inp, out = parse_args()
+    inp, out = parse_file_args()
     letter_distribution = read_distribution(inp)
     print_distribution_to_file(letter_distribution, out)
-
-
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("input_file", help="input file")
-    parser.add_argument("output_file", help="output file")
-    args = parser.parse_args()
-    input_file = args.input_file
-    output_file = args.output_file
-    return input_file, output_file
 
 if __name__ == '__main__':
     main()
