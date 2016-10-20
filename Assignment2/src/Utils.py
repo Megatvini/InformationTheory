@@ -1,6 +1,14 @@
 import argparse
 
 
+def byte_from_bin_string(bin_string):
+    res = 0
+    for i in range(8):
+        if bin_string[i] == '1':
+            res += 1 << (7 - i)
+    return res
+
+
 geo_letters = ['ა', 'ბ', 'გ', 'დ', 'ე', 'ვ',
                'ზ', 'თ', 'ი', 'კ', 'ლ', 'მ',
                'ნ', 'ო', 'პ', 'ჟ', 'რ', 'ს',
