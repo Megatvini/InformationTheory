@@ -1,24 +1,5 @@
-from Utils import parse_three_file_args, get_one_gram_letters
 from CompleteWrite import CompleteWriter
-
-
-def get_code_list(inp):
-    res = []
-    for line in inp:
-        res.append(line.replace('\n', ''))
-    return res
-
-
-def read_code_list(code_file):
-    with open(code_file, 'r', encoding='UTF-8') as inp:
-        return get_code_list(inp)
-
-
-def read_encoding_map(code_file):
-    all_letters = get_one_gram_letters()
-    codes_list = read_code_list(code_file)
-    encoding_map = dict(zip(all_letters, codes_list))
-    return encoding_map
+from Utils import parse_three_file_args, read_encoding_map
 
 
 def get_next_char(inp):

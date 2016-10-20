@@ -9,6 +9,33 @@ def byte_from_bin_string(bin_string):
     return res
 
 
+def read_decoding_map(code_file):
+    encoding_map = read_encoding_map(code_file)
+    res = {}
+    for k, v in encoding_map.items():
+        res[v] = k
+    return res
+
+
+def read_encoding_map(code_file):
+    all_letters = get_one_gram_letters()
+    codes_list = read_code_list(code_file)
+    encoding_map = dict(zip(all_letters, codes_list))
+    return encoding_map
+
+
+def read_code_list(code_file):
+    with open(code_file, 'r', encoding='UTF-8') as inp:
+        return get_code_list(inp)
+
+
+def get_code_list(inp):
+    res = []
+    for line in inp:
+        res.append(line.replace('\n', ''))
+    return res
+
+
 geo_letters = ['ა', 'ბ', 'გ', 'დ', 'ე', 'ვ',
                'ზ', 'თ', 'ი', 'კ', 'ლ', 'მ',
                'ნ', 'ო', 'პ', 'ჟ', 'რ', 'ს',
