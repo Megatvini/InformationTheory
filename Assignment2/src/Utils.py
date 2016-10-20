@@ -9,6 +9,21 @@ def byte_from_bin_string(bin_string):
     return res
 
 
+def get_bin_string_from_byte(byte):
+    res = ''
+    for i in range(8):
+        res += str((byte[0] >> (7 - i)) & 1)
+    return res
+
+
+def get_bin_string_from_last_byte(byte):
+    res = get_bin_string_from_byte(byte)
+    index = len(res) - 1
+    while res[index] == '0':
+        index -= 1
+    return res[0:index]
+
+
 def read_decoding_map(code_file):
     encoding_map = read_encoding_map(code_file)
     res = {}

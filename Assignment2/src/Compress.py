@@ -1,4 +1,4 @@
-from CompleteWrite import CompleteWriter
+from CompleteIO import CompleteWriter
 from Utils import parse_three_file_args, read_encoding_map
 
 

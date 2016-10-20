@@ -1,4 +1,4 @@
-from Utils import byte_from_bin_string
+from Utils import byte_from_bin_string, get_bin_string_from_byte, get_bin_string_from_last_byte
 
 
 class CompleteWriter:
@@ -37,3 +37,42 @@ class CompleteWriter:
             self.file_descriptor.write(byte)
             self.bin_string_buffer = self.bin_string_buffer[8:]
         self.last_byte_string = self.bin_string_buffer
+
+
+class CompleteReader:
+    def __init__(self,  decoding_map, file_name=None, file_descriptor=None,):
+        if file_name is not None and file_descriptor is None:
+            self.file_descriptor = open(file_name, 'wb')
+        else:
+            self.file_descriptor = file_descriptor
+        self.input_buffer = ''
+        self.last_byte = None
+        self.decoding_map = decoding_map
+
+    def add_byte(self, byte):
+        if self.last_byte is not None:
+            self.input_buffer += get_bin_string_from_byte(self.last_byte)
+        self.last_byte = byte
+        self.flush()
+
+    def flush(self):
+        while True:
+            decoded = False
+            for bin_str_code in sorted(self.decoding_map.keys()):
+                if self.try_decode(bin_str_code):
+                    decoded = True
+            if not decoded:
+                break
+
+    def try_decode(self, bin_str_code):
+        if self.input_buffer.startswith(bin_str_code):
+            character = self.decoding_map[bin_str_code]
+            self.input_buffer = self.input_buffer[len(bin_str_code):]
+            self.file_descriptor.write(character)
+            return True
+        return False
+
+    def close_file(self):
+        self.input_buffer += get_bin_string_from_last_byte(self.last_byte)
+        self.flush()
+        self.file_descriptor.close()
