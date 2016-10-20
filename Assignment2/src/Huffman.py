@@ -13,7 +13,7 @@ def read_file_input(input_file):
         return read_input(inp)
 
 
-def generate_huffman_codes(probabilities):
+def generate_huffman_codes_tree(probabilities):
     names = []
     for index, prob in enumerate(probabilities):
         names.append((prob, None, None, index))
@@ -56,32 +56,32 @@ def get_codes_list(n_words, code_words):
     return res
 
 
-def write_huffman_codes(n_words, code_words, probabilities, out):
-    mean_length = calculate_mean_length(code_words, probabilities)
+def write_huffman_codes(n_words, code_word_tree, probabilities, out):
+    code_list = get_codes_list(n_words, code_word_tree)
+    mean_length = calculate_mean_length(code_list, probabilities)
     out.write(precision_str_from_float(mean_length) + '\n')
-    code_list = get_codes_list(n_words, code_words)
     write_string_list(code_list, out)
     out.write('\n')
     write_float_list(probabilities, out)
 
 
-def write_codes_to_file(n_words, code_words, probabilities, output_file):
+def write_codes_to_file(n_words, code_word_tree, probabilities, output_file):
     with open(output_file, 'w', encoding='UTF-8') as out:
-        write_huffman_codes(n_words, code_words, probabilities, out)
+        write_huffman_codes(n_words, code_word_tree, probabilities, out)
 
 
-def calculate_mean_length(code_words, probabilities):
+def calculate_mean_length(code_word_tree, probabilities):
     products = []
-    for index, word in enumerate(code_words):
+    for index, word in enumerate(code_word_tree):
         products.append(len(word) * probabilities[index])
-    return sum(products)/len(products)
+    return sum(products)
 
 
 def main():
     input_file, output_file = parse_file_args()
     n_words, probabilities = read_file_input(input_file)
-    code_words = generate_huffman_codes(probabilities)
-    write_codes_to_file(n_words, code_words, probabilities, output_file)
+    code_word_tree = generate_huffman_codes_tree(probabilities)
+    write_codes_to_file(n_words, code_word_tree, probabilities, output_file)
 
 if __name__ == '__main__':
     main()
