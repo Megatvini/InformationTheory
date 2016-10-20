@@ -1,4 +1,4 @@
-from Utils import parse_file_args, print_float_list
+from Utils import parse_file_args, write_string_list
 
 
 def read_word_lengths(input_file):
@@ -74,7 +74,7 @@ def write_code_words(word_lengths, out):
         return
     code_words = generate_code_words(word_lengths)
     ordered_code_words = align_lengths(code_words, word_lengths)
-    print(ordered_code_words)
+    write_string_list(ordered_code_words, out)
 
 
 def write_code_words_to_file(word_lengths, output_file):

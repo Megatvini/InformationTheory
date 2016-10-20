@@ -24,11 +24,15 @@ def get_distribution_list(gram_count, letters):
     return distribution
 
 
-def print_float_list(distribution, out):
+def write_float_list(distribution, out):
     for val in distribution[:-1]:
         str_value = precision_str_from_float(val)
         out.write(str_value + " ")
     out.write(precision_str_from_float(distribution[len(distribution) - 1]))
+
+
+def write_string_list(str_list, out):
+    out.write(str(str_list).replace(',', '').replace("'", "")[1:-1])
 
 
 def get_bi_gram_letters(single_letters):

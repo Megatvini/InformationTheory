@@ -1,5 +1,5 @@
 from collections import Counter
-from Utils import parse_file_args, print_float_list,\
+from Utils import parse_file_args, write_float_list,\
     get_distribution_list, get_one_gram_letters, get_bi_gram_letters
 
 
@@ -16,7 +16,7 @@ def split_grams(letter_distribution):
 
 def print_distribution_gram(letters, gram_count, out):
     distribution = get_distribution_list(gram_count, letters)
-    print_float_list(distribution, out)
+    write_float_list(distribution, out)
 
 
 def print_distribution(letter_distribution, out):
