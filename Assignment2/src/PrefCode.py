@@ -74,7 +74,7 @@ def write_code_words(word_lengths, out):
         return
     code_words = generate_code_words(word_lengths)
     ordered_code_words = align_lengths(code_words, word_lengths)
-    write_string_list(ordered_code_words, out)
+    write_string_list(ordered_code_words, out, delimiter='\n')
 
 
 def write_code_words_to_file(word_lengths, output_file):

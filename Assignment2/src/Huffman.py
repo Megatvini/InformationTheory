@@ -59,10 +59,8 @@ def get_codes_list(n_words, code_words):
 def write_huffman_codes(n_words, code_word_tree, probabilities, out):
     code_list = get_codes_list(n_words, code_word_tree)
     mean_length = calculate_mean_length(code_list, probabilities)
-    out.write(precision_str_from_float(mean_length) + '\n')
-    write_string_list(code_list, out)
-    out.write('\n')
-    write_float_list(probabilities, out)
+    print("mean_length: {}".format(mean_length))
+    write_string_list(code_list, out, delimiter='\n')
 
 
 def write_codes_to_file(n_words, code_word_tree, probabilities, output_file):
