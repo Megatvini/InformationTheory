@@ -1,5 +1,4 @@
-from Utils import parse_file_args, write_string_list,\
-    precision_str_from_float, write_float_list
+from Utils import parse_file_args, write_string_list
 
 
 def read_input(inp):
@@ -35,11 +34,11 @@ def find_index(index, cur_node):
 
     left_road = find_index(index, cur_node[1])
     if left_road is not None:
-        return left_road + "1"
+        return "1" + left_road
 
     right_road = find_index(index, cur_node[2])
     if right_road is not None:
-        return right_road + "0"
+        return "0" + right_road
 
 
 def get_huffman_code(index, code_words):
@@ -59,7 +58,7 @@ def get_codes_list(n_words, code_words):
 def write_huffman_codes(n_words, code_word_tree, probabilities, out):
     code_list = get_codes_list(n_words, code_word_tree)
     mean_length = calculate_mean_length(code_list, probabilities)
-    print("mean_length: {}".format(mean_length))
+    # print("mean_length: {}".format(mean_length))
     write_string_list(code_list, out, delimiter='\n')
 
 
