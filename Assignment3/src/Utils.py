@@ -82,8 +82,3 @@ def elias_gama_code(num):
     res += '1'
     res += get_bin_repr(num)[1:]
     return res
-
-
-if __name__ == '__main__':
-    for i in range(10):
-        print(elias_gama_code(i))
