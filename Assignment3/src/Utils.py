@@ -61,8 +61,13 @@ def get_log_len(num):
     return int(log2(num)) + 1
 
 
-def get_bin_repr(num):
+def get_bin_repr(num, res_len=None):
     res = bin(num)[2:]
+
+    if res_len is not None:
+        while len(res) < res_len:
+            res = '0' + res
+
     return res
 
 

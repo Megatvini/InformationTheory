@@ -1,5 +1,6 @@
-from Utils import parse_file_args, get_file_size_in_bytes, elias_gama_code
+from Utils import parse_file_args, get_file_size_in_bytes, elias_gama_code, get_bin_repr
 from CompleteIO import CompleteWriter
+from math import ceil, log2
 
 
 def write_file_size(input_size, writer):
@@ -7,8 +8,36 @@ def write_file_size(input_size, writer):
     writer.write_data(gama_code)
 
 
+def get_code(cur_buffer, dic):
+    num = dic[cur_buffer]
+    res_len = int(ceil(log2(len(dic))))
+    bin_code = get_bin_repr(num, res_len)
+    return bin_code
+
+
+def update_dic(cur_word, dic):
+    dic[cur_word + '0'] = dic[cur_word]
+    dic[cur_word + '1'] = len(dic)
+    dic.pop(cur_word)
+
+
+def compress(data):
+    res = ''
+    dic = {'0': 0, '1': 1}
+    cur_buffer = ''
+    for ch in data:
+        cur_buffer += ch
+        if cur_buffer in dic:
+            res += get_code(cur_buffer, dic)
+            update_dic(cur_buffer, dic)
+            cur_buffer = ''
+    return res
+
+
 def write_compressed_data(inp_buffer, writer):
-    pass
+    data = inp_buffer.readall()
+    compressed_data = compress(data)
+    writer.write_data(compressed_data)
 
 
 def lz_compress_buffers(input_size, inp_buffer, out_buffer):
