@@ -1,3 +1,4 @@
+import time
 from math import ceil, log2
 from Utils import parse_file_args, get_file_size_in_bytes,\
     elias_gama_code, get_bin_repr, get_bin_string_from_byte
@@ -76,4 +77,7 @@ def main():
     lz_compress(input_file, output_file)
 
 if __name__ == '__main__':
+    start = time.time()
     main()
+    end = time.time()
+    print('elapsed: {} sec'.format(round(end - start, 2)))
