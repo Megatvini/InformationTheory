@@ -82,3 +82,28 @@ def elias_gama_code(num):
     res += '1'
     res += get_bin_repr(num)[1:]
     return res
+
+
+def read_elias_code(data):
+    cur_index = 0
+    num_len = 0
+    while data[cur_index] != '1':
+        cur_index += 1
+        num_len += 1
+
+    bin_string = '1' + data[cur_index + 1: cur_index + num_len + 1]
+    res_num = int(bin_string, base=2)
+
+    cur_index += num_len + 1
+
+    return res_num, cur_index
+
+
+def read_whole_buffer(inp_buffer):
+    res = ''
+    while True:
+        next_byte = inp_buffer.read(1)
+        if len(next_byte) == 0:
+            break
+        res += get_bin_string_from_byte(next_byte)
+    return res

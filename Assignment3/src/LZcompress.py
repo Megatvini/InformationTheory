@@ -1,7 +1,7 @@
 import time
 from math import ceil, log2
 from Utils import parse_file_args, get_file_size_in_bytes,\
-    elias_gama_code, get_bin_repr, get_bin_string_from_byte
+    elias_gama_code, get_bin_repr, read_whole_buffer
 from CompleteIO import CompleteWriter
 
 
@@ -42,18 +42,8 @@ def compress(data):
     return res
 
 
-def read_whole(inp_buffer):
-    res = ''
-    while True:
-        next_byte = inp_buffer.read(1)
-        if len(next_byte) == 0:
-            break
-        res += get_bin_string_from_byte(next_byte)
-    return res
-
-
 def write_compressed_data(inp_buffer, writer):
-    data = read_whole(inp_buffer)
+    data = read_whole_buffer(inp_buffer)
     compressed_data = compress(data)
     writer.write_data(compressed_data)
 
