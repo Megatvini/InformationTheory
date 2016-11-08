@@ -1,3 +1,4 @@
+import time
 import os
 from math import log2
 import argparse
@@ -107,3 +108,10 @@ def read_whole_buffer(inp_buffer):
             break
         res += get_bin_string_from_byte(next_byte)
     return res
+
+
+def time_fn(fn, args=None):
+    start = time.time()
+    fn(args)
+    end = time.time()
+    print('elapsed: {} sec'.format(round(end - start, 2)))

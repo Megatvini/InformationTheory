@@ -67,7 +67,4 @@ def main():
     lz_compress(input_file, output_file)
 
 if __name__ == '__main__':
-    start = time.time()
     main()
-    end = time.time()
-    print('elapsed: {} sec'.format(round(end - start, 2)))
