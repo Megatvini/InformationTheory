@@ -112,6 +112,6 @@ def read_whole_buffer(inp_buffer):
 
 def time_fn(fn, args=None):
     start = time.time()
-    fn(args)
+    fn() if args is None else fn(args)
     end = time.time()
     print('elapsed: {} sec'.format(round(end - start, 2)))

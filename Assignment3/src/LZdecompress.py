@@ -1,4 +1,5 @@
-from Utils import parse_file_args, read_whole_buffer, read_elias_code, get_bin_repr
+from Utils import parse_file_args, read_whole_buffer, \
+    read_elias_code, get_bin_repr, time_fn
 from CompleteIO import SimpleWriter
 
 
@@ -44,4 +45,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    time_fn(main)
