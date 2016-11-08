@@ -1,6 +1,6 @@
+from CompleteIO import SimpleWriter
 from Utils import parse_file_args, read_whole_buffer, \
     read_elias_code, get_bin_repr, time_fn
-from CompleteIO import SimpleWriter
 
 
 def update_dic(dic, code_int):
@@ -21,11 +21,21 @@ def decompress(bin_string_data, start_of_file, file_size):
         cur_index += cur_len
         cur_len = len(get_bin_repr(len(dic) - 1))
 
+    if len(res) > file_size*8:
+        res = res[:file_size*8]
+
+    return res
+
+
+def read_complete_buffer(input_buff):
+    res = read_whole_buffer(input_buff)
+    r_index = res.rfind('1')
+    res = res[:r_index]
     return res
 
 
 def lz_decompress_buffers(input_buff, out_buff):
-    bin_string_data = read_whole_buffer(input_buff)
+    bin_string_data = read_complete_buffer(input_buff)
     file_size, start_of_file = read_elias_code(bin_string_data)
     decompressed_data = decompress(bin_string_data, start_of_file, file_size)
     writer = SimpleWriter(file_descriptor=out_buff)
