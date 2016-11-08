@@ -11,6 +11,7 @@ class CompleteWriter:
         self.last_byte_string = ''
 
     def close_file(self):
+        self.check_flush()
         last_byte_string = self.last_byte_string
         if len(last_byte_string) == 8:
             num = byte_from_bin_string(last_byte_string)
@@ -30,13 +31,17 @@ class CompleteWriter:
         self.check_flush()
 
     def check_flush(self):
-        while len(self.bin_string_buffer) >= 8:
-            next_byte_string = self.bin_string_buffer[:8]
+        cur_index = 0
+        while len(self.bin_string_buffer) > cur_index:
+            next_byte_string = self.bin_string_buffer[cur_index: cur_index + 8]
+            if len(next_byte_string) < 8:
+                break
             data_to_flush = byte_from_bin_string(next_byte_string)
             byte = data_to_flush.to_bytes(1, byteorder='big')
             self.file_descriptor.write(byte)
-            self.bin_string_buffer = self.bin_string_buffer[8:]
-        self.last_byte_string = self.bin_string_buffer
+            cur_index += 8
+        self.bin_string_buffer = self.bin_string_buffer[cur_index:]
+        self.last_byte_string = self.bin_string_buffer[cur_index:]
 
 
 class CompleteReader:
@@ -95,9 +100,14 @@ class SimpleWriter:
         self.check_flush()
 
     def check_flush(self):
-        while len(self.bin_string_buffer) >= 8:
-            next_byte_string = self.bin_string_buffer[:8]
+        cur_index = 0
+        while cur_index < len(self.bin_string_buffer):
+            next_byte_string = self.bin_string_buffer[cur_index: cur_index + 8]
+            if len(next_byte_string) != 8:
+                break
             data_to_flush = byte_from_bin_string(next_byte_string)
             byte = data_to_flush.to_bytes(1, byteorder='big')
             self.file_descriptor.write(byte)
-            self.bin_string_buffer = self.bin_string_buffer[8:]
+            cur_index += 8
+
+        self.bin_string_buffer = self.bin_string_buffer[cur_index:]
