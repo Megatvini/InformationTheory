@@ -23,7 +23,6 @@ class Matrix:
                 if self.values[row_index][col_index] != need_value:
                     self.__xor_rows(row_index, col_index)
 
-
     def set_row(self, row_index: int, row_values: list):
         if len(row_values) != self.num_cols:
             raise ValueError("wrong row size")
@@ -76,6 +75,28 @@ class Matrix:
         res = Matrix(self.num_rows, self.num_cols)
         for i in range(self.num_rows):
             res.set_row(i, self.values[i].copy())
+        return res
+
+    def write_to_buffer(self, out):
+        out.write("{} {}\n".format(self.num_cols, self.num_rows))
+        for row in self.values:
+            for num in row:
+                out.write(str(num))
+            out.write("\n")
+
+    def generate_parity_matrix(self):
+        res = Matrix(num_rows=self.num_cols - self.num_rows, num_cols=self.num_cols)
+        for row_index in range(self.num_rows):
+            for col_index in range(self.num_rows, self.num_cols):
+                val = self.values[row_index][col_index]
+                res.values[col_index - self.num_rows][row_index] = val
+
+        i = 0
+        j = self.num_rows
+        for _ in range(self.num_cols - self.num_rows):
+            res.values[i][j] = 1
+            i += 1
+            j += 1
         return res
 
 

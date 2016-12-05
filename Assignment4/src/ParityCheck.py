@@ -1,11 +1,5 @@
-from Matrix import Matrix, read_matrix_from_file
 from Utils import parse_file_args
-
-
-def write_res_to_file(matrix: Matrix, out):
-    matrix.write_to_buffer(out)
-    for num in matrix.permutations:
-        out.write("{} ".format(num))
+from Matrix import read_matrix_from_file
 
 
 def main():
@@ -13,8 +7,9 @@ def main():
     with open(input_file, 'r') as inp:
         matrix = read_matrix_from_file(inp)
     matrix.standard_form()
+    check_matrix = matrix.generate_parity_matrix()
     with open(output_file, 'w') as out:
-        write_res_to_file(matrix, out)
+        check_matrix.write_to_buffer(out)
 
 if __name__ == '__main__':
     main()
