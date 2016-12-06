@@ -6,7 +6,7 @@ class Matrix:
         self.num_rows = num_rows
         self.num_cols = num_cols
         self.values = [[0 for _ in range(num_cols)] for _ in range(num_rows)]
-        self.permutations = [i + 1 for i in range(self.num_cols)]
+        self.permutations = [i for i in range(self.num_cols)]
 
     def standard_form(self):
         for row_index in range(self.num_rows):
@@ -97,12 +97,25 @@ class Matrix:
             res.values[i][j] = 1
             i += 1
             j += 1
+
+        res.__permute_cols(self.permutations)
         return res
 
     def times_vector(self, vector: list):
         if not len(vector) == self.num_cols:
             raise ValueError("bad vector size")
         return [vector_product(self.values[i], vector) for i in range(self.num_rows)]
+
+    def __permute_cols(self, permutations: list):
+        new_values = [[0 for _ in range(self.num_cols)] for _ in range(self.num_rows)]
+        reverse_permutation = [0 for _ in range(len(permutations))]
+        for index, num in enumerate(permutations):
+            reverse_permutation[num] = index
+
+        for j in range(self.num_cols):
+            for i in range(self.num_rows):
+                new_values[i][j] = self.values[i][reverse_permutation[j]]
+        self.values = new_values
 
 
 def read_matrix_from_file(inp):

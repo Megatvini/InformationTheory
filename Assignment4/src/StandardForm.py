@@ -5,7 +5,7 @@ from Utils import parse_file_args
 def write_res_to_file(matrix: Matrix, out):
     matrix.write_to_buffer(out)
     for num in matrix.permutations:
-        out.write("{} ".format(num))
+        out.write("{} ".format(num + 1))
 
 
 def main():
