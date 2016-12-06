@@ -104,7 +104,7 @@ class Matrix:
     def times_vector(self, vector: list):
         if not len(vector) == self.num_cols:
             raise ValueError("bad vector size")
-        return [vector_product(self.values[i], vector) for i in range(self.num_rows)]
+        return [vector_product(self.values[i], vector) % 2 for i in range(self.num_rows)]
 
     def __permute_cols(self, permutations: list):
         new_values = [[0 for _ in range(self.num_cols)] for _ in range(self.num_rows)]
