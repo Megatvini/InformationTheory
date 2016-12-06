@@ -24,3 +24,24 @@ def swap_values(data: list, index1: int, index2: int):
     tmp = data[index1]
     data[index1] = data[index2]
     data[index2] = tmp
+
+
+def parse_three_file_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("generator_matrix", help="generator matrix file name")
+    parser.add_argument("num", help="num file name")
+    parser.add_argument("output", help="output file name")
+    args = parser.parse_args()
+    matrix_file = args.generator_matrix
+    input_file = args.num
+    output_file = args.output
+    return matrix_file, input_file, output_file
+
+
+def vector_product(one: list, two: list):
+    if len(one) != len(two):
+        raise ValueError()
+    res = 0
+    for i in range(len(one)):
+        res += one[i] * two[i]
+    return res

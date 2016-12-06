@@ -1,4 +1,4 @@
-from Utils import read_int_lines, read_matrix_row, swap_values
+from Utils import read_int_lines, read_matrix_row, swap_values, vector_product
 
 
 class Matrix:
@@ -98,6 +98,11 @@ class Matrix:
             i += 1
             j += 1
         return res
+
+    def times_vector(self, vector: list):
+        if not len(vector) == self.num_cols:
+            raise ValueError("bad vector size")
+        return [vector_product(self.values[i], vector) for i in range(self.num_rows)]
 
 
 def read_matrix_from_file(inp):
