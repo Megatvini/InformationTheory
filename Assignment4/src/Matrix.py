@@ -117,6 +117,20 @@ class Matrix:
                 new_values[i][j] = self.values[i][reverse_permutation[j]]
         self.values = new_values
 
+    def encode(self, bin_string):
+        vector = [int(ch) for ch in bin_string]
+        res_vector = []
+        for i in range(self.num_cols):
+            cur_val = 0
+            for r in range(self.num_rows):
+                cur_val += vector[r] * self.values[r][i]
+            res_vector.append(cur_val%2)
+
+        res = ''
+        for x in res_vector:
+            res += str(x)
+        return res
+
 
 def read_matrix_from_file(inp):
     num_cols, num_rows = read_int_lines(inp)

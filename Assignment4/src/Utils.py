@@ -26,16 +26,16 @@ def swap_values(data: list, index1: int, index2: int):
     data[index2] = tmp
 
 
-def parse_three_file_args():
+def parse_three_file_args(arg1_name: str, arg2_name: str, arg3_name: str):
     parser = argparse.ArgumentParser()
-    parser.add_argument("generator_matrix", help="generator matrix file name")
-    parser.add_argument("num", help="num file name")
-    parser.add_argument("output", help="output file name")
+    parser.add_argument("arg1", help=arg1_name)
+    parser.add_argument("arg2", help=arg2_name)
+    parser.add_argument("arg3", help=arg3_name)
     args = parser.parse_args()
-    matrix_file = args.generator_matrix
-    input_file = args.num
-    output_file = args.output
-    return matrix_file, input_file, output_file
+    arg1 = args.arg1
+    arg2 = args.arg2
+    arg3 = args.arg3
+    return arg1, arg2, arg3
 
 
 def vector_product(one: list, two: list):
@@ -44,4 +44,37 @@ def vector_product(one: list, two: list):
     res = 0
     for i in range(len(one)):
         res += one[i] * two[i]
+    return res
+
+
+def byte_from_bin_string(bin_string):
+    res = 0
+    for i in range(8):
+        if bin_string[i] == '1':
+            res += 1 << (7 - i)
+    return res
+
+
+def get_bin_string_from_byte(byte):
+    res = ''
+    for i in range(8):
+        res += str((byte[0] >> (7 - i)) & 1)
+    return res
+
+
+def get_bin_string_from_last_byte(byte):
+    res = get_bin_string_from_byte(byte)
+    index = len(res) - 1
+    while res[index] == '0':
+        index -= 1
+    return res[0:index]
+
+
+def read_whole_buffer(inp_buffer):
+    res = ''
+    while True:
+        next_byte = inp_buffer.read(1)
+        if len(next_byte) == 0:
+            break
+        res += get_bin_string_from_byte(next_byte)
     return res

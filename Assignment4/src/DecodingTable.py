@@ -13,7 +13,7 @@ def generate_errors(message_length, num_errors):
         yield res
 
 
-def save_deciding_data(matrix: Matrix, max_errors: int, out):
+def save_decoding_data(matrix: Matrix, max_errors: int, out):
     matrix.standard_form()
     check_matrix = matrix.generate_parity_matrix()
     lookup_table = {}
@@ -28,7 +28,11 @@ def save_deciding_data(matrix: Matrix, max_errors: int, out):
 
 
 def main():
-    generator_file, num_file, output_file = parse_three_file_args()
+    generator_file, num_file, output_file = parse_three_file_args(
+        'generator file name',
+        'num file name',
+        'output file name'
+    )
 
     with open(generator_file, 'r') as inp:
         matrix = read_matrix_from_file(inp)
@@ -37,7 +41,7 @@ def main():
         max_errors = int(inp.readline())
 
     with open(output_file, 'wb') as out:
-        save_deciding_data(matrix, max_errors, out)
+        save_decoding_data(matrix, max_errors, out)
 
 
 if __name__ == '__main__':
