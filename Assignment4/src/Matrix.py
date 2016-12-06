@@ -124,11 +124,24 @@ class Matrix:
             cur_val = 0
             for r in range(self.num_rows):
                 cur_val += vector[r] * self.values[r][i]
-            res_vector.append(cur_val%2)
+            res_vector.append(cur_val % 2)
 
         res = ''
         for x in res_vector:
             res += str(x)
+        return res
+
+    def decode(self, bin_string, lookup_table):
+        vector = [int(ch) for ch in bin_string]
+        product = list(map(lambda x: x % 2, self.times_vector(vector)))
+        if str(product) not in lookup_table:
+            res_vector = vector
+        else:
+            error = lookup_table[str(product)]
+            res_vector = [(error[i] + vector[i]) % 2 for i in range(len(vector))]
+        res = ''
+        for num in res_vector:
+            res += str(num)
         return res
 
 

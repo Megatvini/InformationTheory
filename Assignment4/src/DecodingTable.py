@@ -1,7 +1,8 @@
 import pickle
 from itertools import combinations
-from Utils import parse_three_file_args
+
 from Matrix import Matrix, read_matrix_from_file
+from Utils import parse_three_file_args
 
 
 def generate_errors(message_length, num_errors):
