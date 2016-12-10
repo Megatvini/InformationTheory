@@ -108,14 +108,18 @@ class Matrix:
 
     def __permute_cols(self, permutations: list):
         new_values = [[0 for _ in range(self.num_cols)] for _ in range(self.num_rows)]
-        reverse_permutation = [0 for _ in range(len(permutations))]
-        for index, num in enumerate(permutations):
-            reverse_permutation[num] = index
+        reverse_permutation = self.get_reverse_permutations()
 
         for j in range(self.num_cols):
             for i in range(self.num_rows):
                 new_values[i][j] = self.values[i][reverse_permutation[j]]
         self.values = new_values
+
+    def get_reverse_permutations(self):
+        reverse_permutation = [0 for _ in range(len(self.permutations))]
+        for index, num in enumerate(self.permutations):
+            reverse_permutation[num] = index
+        return reverse_permutation
 
     def encode(self, bin_string):
         vector = [int(ch) for ch in bin_string]
