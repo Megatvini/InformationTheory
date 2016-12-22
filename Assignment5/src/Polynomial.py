@@ -29,7 +29,7 @@ class Polynomial:
         if coefficients is None:
             coefficients = []
         self.mod = mod
-        self.coefficients = list(map(lambda x: x % mod, coefficients))
+        self.coefficients = remove_trailing_zeros(list(map(lambda x: x % mod, coefficients)))
 
     def __str__(self):
         powers = [(c, i) for i, c in enumerate(self.coefficients)]
