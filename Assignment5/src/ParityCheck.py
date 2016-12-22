@@ -11,13 +11,10 @@ def write_res(polynomial, code_length, out):
     if str(remainder) == '0':
         out.write('YES\n')
         checker = big_polynomial / polynomial
-        coefficients = [0 for _ in range(code_length)]
-        for index, val in enumerate(checker.coefficients):
-            coefficients[index] = val
+        coefficients = checker.get_code(code_length)
         out.write(" ".join(map(str, coefficients)) + '\n')
     else:
         out.write('NO\n')
-
 
 def main():
     input_file, output_file = parse_file_args()

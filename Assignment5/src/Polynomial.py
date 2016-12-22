@@ -123,3 +123,12 @@ class Polynomial:
         self._check_type(other)
         div_res = self // other
         return self - div_res * other
+
+    def get_code(self, code_length):
+        code = [0 for _ in range(code_length)]
+        for index, val in enumerate(self.coefficients):
+            code[index] = val
+        return code
+
+    def degree(self):
+        return len(self.coefficients) - 1
