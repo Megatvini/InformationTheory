@@ -117,5 +117,36 @@ class TestPolynomialMethods(unittest.TestCase):
         res = p1 * p2 * 2
         self.assertEqual('2 + 2x + 2x^2 + x^3 + 2x^4', str(res))
 
+    def test_floor_div0(self):
+        p1 = Polynomial([1, 2, 1], 3)
+        p2 = Polynomial([1, 1], 3)
+        res = p1 // p2
+        self.assertEqual('1 + x', str(res))
+
+    def test_floor_div1(self):
+        p1 = Polynomial([1, 2, 1], 3)
+        p2 = Polynomial([1, 1], 3)
+        res = p2 // p1
+        self.assertEqual('0', str(res))
+
+    def test_floor_div2(self):
+        p1 = Polynomial([1, 2, 1], 3)
+        p2 = Polynomial([2, 2, 2, 2], 3)
+        p3 = Polynomial([1, 1], 3)
+        res = (p1 * p2 * p3) // (p3 * p2)
+        self.assertEqual(str(p1), str(res))
+
+    def test_remainder_div0(self):
+        p1 = Polynomial([1, 2, 1], 3)
+        p2 = Polynomial([1, 1], 3)
+        res = p1 % p2
+        self.assertEqual('0', str(res))
+
+    def test_true_div0(self):
+        p1 = Polynomial([1, 2, 1], 3)
+        p2 = Polynomial([1, 1], 3)
+        res = p1 / p2
+        self.assertEqual('1 + x', str(res))
+
 if __name__ == '__main__':
     unittest.main()

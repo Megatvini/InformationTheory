@@ -1,3 +1,6 @@
+from Utils import div_modulo
+
+
 def _member(x):
     coefficient, exponent = x
     if exponent == 0:
@@ -22,7 +25,9 @@ def remove_trailing_zeros(res):
 
 
 class Polynomial:
-    def __init__(self, coefficients: list, mod: int):
+    def __init__(self, coefficients=None, mod: int = 2):
+        if coefficients is None:
+            coefficients = []
         self.mod = mod
         self.coefficients = list(map(lambda x: x % mod, coefficients))
 
@@ -35,21 +40,13 @@ class Polynomial:
         return ' + '.join(res)
 
     def __add__(self, other):
-        if type(other) != Polynomial:
-            raise TypeError("wrong type")
-
-        if other.mod != self.mod:
-            raise ValueError("mod params must be the same")
+        self._check_type(other)
 
         new_coefficients = self._added_coefficients(other.coefficients)
         return Polynomial(new_coefficients, self.mod)
 
     def __sub__(self, other):
-        if type(other) != Polynomial:
-            raise TypeError("wrong type")
-
-        if other.mod != self.mod:
-            raise ValueError("mod params must be the same")
+        self._check_type(other)
 
         return self + other * (-1)
 
@@ -61,7 +58,7 @@ class Polynomial:
         res = one.copy()
         for index, value in enumerate(two):
             res[index] = (value + one[index]) % self.mod
-        return res
+        return remove_trailing_zeros(res)
 
     def __mul__(self, other):
         if type(other) == Polynomial:
@@ -78,7 +75,7 @@ class Polynomial:
         one = self.coefficients
         two = coefficients
 
-        res_len = len(one) + len(two)
+        res_len = len(one) + len(two) - 1
         res = [0 for _ in range(res_len)]
         for exponent1, coefficient1 in enumerate(one):
             for exponent2, coefficient2 in enumerate(two):
@@ -88,7 +85,41 @@ class Polynomial:
         return remove_trailing_zeros(res)
 
     def __truediv__(self, other):
-        pass
+        self._check_type(other)
+
+        floor_div = self // other
+        if str(self - floor_div * other) != '0':
+            raise ValueError("does not divide")
+        return floor_div
+
+    def _check_type(self, other):
+        if type(other) != Polynomial:
+            raise TypeError("wrong type")
+        if other.mod != self.mod:
+            raise ValueError("mod params must be the same")
 
     def __floordiv__(self, other):
-        pass
+        self._check_type(other)
+
+        to_divide = Polynomial(self.coefficients.copy(), self.mod)
+        res = Polynomial(mod=self.mod)
+        while True:
+            exponent_diff = len(to_divide.coefficients) - len(other.coefficients)
+            if exponent_diff < 0:
+                return res
+
+            coefficients = [0 for _ in range(exponent_diff)]
+            to_divide_coefficient = to_divide.coefficients[len(to_divide.coefficients) - 1]
+            other_coefficient = other.coefficients[len(other.coefficients) - 1]
+            num_coefficient = div_modulo(to_divide_coefficient, other_coefficient, to_divide.mod)
+            coefficients.append(num_coefficient)
+
+            p = Polynomial(coefficients, to_divide.mod)
+            multiple = other * p
+            to_divide -= multiple
+            res += p
+
+    def __mod__(self, other):
+        self._check_type(other)
+        div_res = self // other
+        return self - div_res * other

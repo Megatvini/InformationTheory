@@ -9,3 +9,7 @@ def parse_file_args():
     input_file = args.input_file
     output_file = args.output_file
     return input_file, output_file
+
+
+def div_modulo(a, b, p):
+    return (b ** (p - 2) * a) % p
