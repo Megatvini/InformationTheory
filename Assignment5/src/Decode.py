@@ -14,19 +14,19 @@ def main():
         data_len = int(inp_data.readline())
         data = read_num_list(inp_data)
 
-    encoded = []
+    decoded = []
     data_index = 0
-    chunk_length = code_length - generator.degree()
+    chunk_length = code_length
     while data_index < data_len:
         cur_data = data[data_index: data_index + chunk_length]
-        encode_p = generator * Polynomial(cur_data, mod)
-        encoded += encode_p.get_code(code_length)
+        decode_p = Polynomial(cur_data, mod) / generator
+        decoded += decode_p.get_code(code_length - generator.degree())
         data_index += chunk_length
 
     with open(output_file, 'w') as out:
-        res_len = len(encoded)
+        res_len = len(decoded)
         out.write(str(res_len) + '\n')
-        out.write(" ".join(map(str, encoded)) + '\n')
+        out.write(" ".join(map(str, decoded)) + '\n')
 
 
 if __name__ == '__main__':
