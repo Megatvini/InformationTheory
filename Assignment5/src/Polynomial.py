@@ -169,3 +169,9 @@ class Polynomial:
         coefficients = [0 for _ in range(power + 1)]
         coefficients[len(coefficients) - 1] = 1
         return Polynomial(coefficients, mod)
+
+    def __hash__(self):
+        return str(self).__hash__()
+
+    def __eq__(self, other):
+        return str(self) == str(other)
