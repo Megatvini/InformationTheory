@@ -69,7 +69,8 @@ class Polynomial:
             new_coefficients = list(map(lambda x: (x * other) % self.mod, self.coefficients))
         else:
             raise TypeError("wrong type")
-        return Polynomial(remove_trailing_zeros(new_coefficients), self.mod)
+        removed_zeros = remove_trailing_zeros(new_coefficients)
+        return Polynomial(removed_zeros, self.mod)
 
     def _multiplied_coefficients(self, coefficients):
         one = self.coefficients
@@ -85,8 +86,6 @@ class Polynomial:
         return remove_trailing_zeros(res)
 
     def __truediv__(self, other):
-        self._check_type(other)
-
         floor_div = self // other
         if str(self - floor_div * other) != '0':
             raise ValueError("does not divide")
@@ -99,6 +98,9 @@ class Polynomial:
             raise ValueError("mod params must be the same")
 
     def __floordiv__(self, other):
+        if type(other) == int:
+            res_coefficients = list(map(lambda x: div_modulo(x, other, self.mod), self.coefficients))
+            return Polynomial(res_coefficients, self.mod)
         self._check_type(other)
 
         to_divide = Polynomial(self.coefficients.copy(), self.mod)
@@ -132,3 +134,38 @@ class Polynomial:
 
     def degree(self):
         return len(self.coefficients) - 1
+
+    def degree_coefficient(self):
+        return self.coefficients[len(self.coefficients) - 1]
+
+    def value_for_(self, x):
+        res = 0
+        for exponent, coefficient in enumerate(self.coefficients):
+            res += (x ** exponent) * coefficient
+        return res
+
+    def copy(self):
+        return Polynomial(self.coefficients.copy(), self.mod)
+
+    def to_power(self, power):
+        res = Polynomial([1], self.mod)
+        for _ in range(power):
+            res *= self
+        return res
+
+    def max_degree_equals(self):
+        last_coefficient = self.coefficients[len(self.coefficients) - 1]
+        new_coefficients = list(map(lambda x: -x, self.coefficients[:-1]))
+        return Polynomial(new_coefficients, self.mod) / last_coefficient
+
+    def components(self):
+        for exponent, coefficient in enumerate(self.coefficients):
+            if coefficient != 0:
+                p = Polynomial.simple_power(exponent, self.mod)
+                yield p * coefficient
+
+    @classmethod
+    def simple_power(cls, power, mod):
+        coefficients = [0 for _ in range(power + 1)]
+        coefficients[len(coefficients) - 1] = 1
+        return Polynomial(coefficients, mod)

@@ -16,6 +16,7 @@ def write_res(polynomial, code_length, out):
     else:
         out.write('NO\n')
 
+
 def main():
     input_file, output_file = parse_file_args()
     with open(input_file, 'r') as inp:
